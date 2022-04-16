@@ -1,11 +1,10 @@
-const http = require('http');
-const app = require('./app');
-const dayjs = require("dayjs")
-const { findDataService, findOneDataUser, findOneDataService, findOneDataUserWithID, findDataBookingWithID } = require('./method/queryDB');
-const { encryptedPass, createUser, createToken, randomTokenKey, comparePassword, decodeJWT } = require('./method/auth_register');
-const { createService } = require('./method/function_service')
-const { createBooking, createData } = require('./method/function_booking')
-const server = http.createServer(app);
+import app from './app';
+// const app = require('./app');
+import dayjs from "dayjs"
+import { findDataService, findOneDataUser, findOneDataService, findOneDataUserWithID, findDataBookingWithID } from './method/queryDB';
+import { encryptedPass, createUser, createToken, randomTokenKey, comparePassword, decodeJWT } from './method/auth_register';
+import { createService } from './method/function_service'
+import { createBooking, createData } from './method/function_booking'
 
 const { API_PORT } = process.env
 const port = process.env.PORT || API_PORT
@@ -126,7 +125,7 @@ app.post('/testBackend/v1/services/:id/booking', async (req, res) => {
         let id_service = req.params.id
         console.log("id_service : ", id_service)
         const auth = req?.headers?.authorization
-        let service = await findOneDataService(id_service);
+        let service:any = await findOneDataService(id_service);
         console.log("service : ", service)
         console.log("auth : ", auth)
         let resultDecodeJWT = await decodeJWT(auth)
@@ -172,6 +171,6 @@ app.post('/testBackend/v1/orders', async (req, res) => {
     }
 })
 
-server.listen(port, () => {
+app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
